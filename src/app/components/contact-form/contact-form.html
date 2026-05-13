@@ -1,0 +1,16 @@
+<div class="p-fluid flex flex-col gap-4 py-2">
+  <p-floatlabel variant="on">
+    <label for="name">Nome</label>
+    <input pInputText id="name" type="text" [(ngModel)]="contact.name" />
+  </p-floatlabel>
+  <p-floatlabel variant="on">
+    <label for="email">Email</label>
+    <input pInputText id="email" type="text" [(ngModel)]="contact.email" />
+  </p-floatlabel>
+  <p-floatlabel variant="on">
+    <label for="phone">Telefone</label>
+    <input pInputText id="phone" type="text" [(ngModel)]="contact.phone" />
+  </p-floatlabel>
+
+    <p-button label="Salvar" icon="pi pi-check" styleClass="w-full mt-4"></p-button>
+</div>

@@ -1,0 +1,38 @@
+<div class="card">
+  <p-toast></p-toast>
+  <p-confirmdialog></p-confirmdialog>
+  <p-table [value]="contacts" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name" style="width: 20%">
+          <div class="flex items-center gap-3">
+            Nome
+            <p-sortIcon field="name" />
+          </div>
+        </th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-contact>
+      <tr>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.email }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            styleClass="p-button-rounded p-button-info p-button-text"
+            (onClick)="editContact(contact)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            styleClass="p-button-rounded p-button-danger p-button-text"
+            (onClick)="deleteContact($event, contact)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
