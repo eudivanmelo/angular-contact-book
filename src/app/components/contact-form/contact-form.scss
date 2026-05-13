@@ -1,0 +1,11 @@
+.contact-form {
+	display: grid;
+	gap: 1rem;
+	min-width: min(100%, 28rem);
+	padding: 0.5rem 0 0.25rem;
+}
+
+.contact-form--editing {
+	border-left: 4px solid #f59e0b;
+	padding-left: 1rem;
+}

@@ -1,22 +1,44 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { FormsModule } from '@angular/forms';
+import { ContactService } from '../../services/contact';
 import { Contact } from '../../models/contact';
 
 @Component({
   selector: 'app-contact-form',
-  standalone: true,
   imports: [InputTextModule, ButtonModule, FormsModule, FloatLabelModule],
   templateUrl: './contact-form.html',
-  styleUrl: './contact-form.scss'
+  styleUrl: './contact-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactForm {
-  @Input() contact: Contact = {} as Contact;
+  readonly contact = input.required<Contact>();
+  readonly saved = output<void>();
+  private readonly contactService = inject(ContactService);
+  protected readonly name = signal('');
+  protected readonly email = signal('');
+  protected readonly phone = signal('');
+  protected readonly isEditing = signal(false);
 
-  onSubmit() {
-    // Handle form submission logic here
-    console.log('Form submitted:', { name: this.contact.name, email: this.contact.email, phone: this.contact.phone });
+  constructor() {
+    effect(() => {
+      const contact = this.contact();
+      this.name.set(contact.name ?? '');
+      this.email.set(contact.email ?? '');
+      this.phone.set(contact.phone ?? '');
+      this.isEditing.set(!!contact.id);
+    });
+  }
+
+  saveContact() {
+    this.contactService.saveContact({
+      ...this.contact(),
+      name: this.name().trim(),
+      email: this.email().trim(),
+      phone: this.phone().trim(),
+    });
+    this.saved.emit();
   }
 }

@@ -1,16 +1,23 @@
-<div class="p-fluid flex flex-col gap-4 py-2">
+<form class="contact-form" [class.contact-form--editing]="isEditing()" (ngSubmit)="saveContact()">
   <p-floatlabel variant="on">
     <label for="name">Nome</label>
-    <input pInputText id="name" type="text" [(ngModel)]="contact.name" />
-  </p-floatlabel>
-  <p-floatlabel variant="on">
-    <label for="email">Email</label>
-    <input pInputText id="email" type="text" [(ngModel)]="contact.email" />
-  </p-floatlabel>
-  <p-floatlabel variant="on">
-    <label for="phone">Telefone</label>
-    <input pInputText id="phone" type="text" [(ngModel)]="contact.phone" />
+    <input pInputText id="name" name="name" type="text" [ngModel]="name()" (ngModelChange)="name.set($event)" />
   </p-floatlabel>
 
-    <p-button label="Salvar" icon="pi pi-check" styleClass="w-full mt-4"></p-button>
-</div>
+  <p-floatlabel variant="on">
+    <label for="email">Email</label>
+    <input pInputText id="email" name="email" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
+  </p-floatlabel>
+
+  <p-floatlabel variant="on">
+    <label for="phone">Telefone</label>
+    <input pInputText id="phone" name="phone" type="text" [ngModel]="phone()" (ngModelChange)="phone.set($event)" />
+  </p-floatlabel>
+
+  <p-button
+    [label]="isEditing() ? 'Atualizar contato' : 'Salvar contato'"
+    icon="pi pi-check"
+    styleClass="w-full mt-4"
+    type="submit"
+  ></p-button>
+</form>

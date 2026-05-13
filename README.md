@@ -1,59 +1,51 @@
-# AngularContactBook
+# Agenda de Contatos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+Uma aplicação simples e intuitiva para gerenciar contatos, desenvolvida em Angular.
 
-## Development server
+## Sobre o Projeto
 
-To start a local development server, run:
+Este é um aplicativo de agenda de contatos que permite você:
 
-```bash
-ng serve
-```
+- **Criar** novos contatos com nome e email
+- **Editar** informações de contatos existentes
+- **Deletar** contatos que não precisa mais
+- **Buscar** contatos em tempo real
+- **Salvar** automaticamente no navegador (localStorage)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O projeto utiliza:
+- **Angular 21** como framework principal
+- **PrimeNG** para componentes de interface
+- **Tailwind CSS** para estilização
 
-## Code scaffolding
+## Como Usar
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Instalação de dependências
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Executar em desenvolvimento
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Abra o navegador e acesse `http://localhost:4200/`. A aplicação recarrega automaticamente ao modificar os arquivos.
 
-For end-to-end (e2e) testing, run:
+### Compilar para produção
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Funcionalidades Principais
 
-## Additional Resources
+- **Adicionar Contato**: Clique no botão para abrir o formulário e adicione um novo contato
+- **Editar Contato**: Clique em um contato para editá-lo
+- **Deletar Contato**: Clique no botão de deletar para remover um contato
+- **Buscar Contato**: Use a barra de busca para encontrar contatos por nome
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Armazenamento
+
+Os contatos são salvos localmente no navegador usando `localStorage`. Isso significa que seus dados persistem mesmo após fechar e reabrir a aplicação.

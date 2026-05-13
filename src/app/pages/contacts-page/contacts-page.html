@@ -1,18 +1,16 @@
-<div class="p-16 px-48">
-  <div class="my-4 flex justify-between">
-    <h1 class="text-2xl font-bold">Agenda de Contatos</h1>
-
-    <div class="flex gap-2">
-      <app-contact-search></app-contact-search>
-      <p-button label="Novo contato" icon="pi pi-plus" (onClick)="openNew()"></p-button>
-    </div>
+<section class="contacts-page">
+  <div class="contacts-page__toolbar">
+    <app-contact-search class="contacts-page__search" (search)="onSearch($event)" />
+    <p-button label="Novo contato" icon="pi pi-plus" severity="secondary" (onClick)="openNew()"></p-button>
   </div>
 
-  <div class="my-4">
-    <app-contact-list (onEdit)="editContact($event)"></app-contact-list>
-  </div>
+  <app-contact-list
+    [searchTerm]="searchTerm()"
+    (edit)="editContact($event)"
+    (deleted)="onContactDeleted()"
+  />
 
-  <p-dialog header="Contato" [(visible)]="contactDialog" [modal]="true" (onHide)="hideDialog()">
-    <app-contact-form [contact]="contact"></app-contact-form>
+  <p-dialog [header]="dialogTitle()" [visible]="contactDialog()" [modal]="true" (onHide)="hideDialog()">
+    <app-contact-form [contact]="contact()" (saved)="onContactSaved()" />
   </p-dialog>
-</div>
+</section>

@@ -1,4 +1,10 @@
-<p-iconfield>
+<p-iconfield iconPosition="left" class="contact-search">
   <p-inputicon class="pi pi-search" />
-  <input type="text" pInputText placeholder="Pesquisar..." />
+  <input
+    type="text"
+    pInputText
+    placeholder="Pesquisar por nome, e-mail ou telefone"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event); onSearchChange()"
+  />
 </p-iconfield>

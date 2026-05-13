@@ -1,31 +1,58 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { TableModule } from 'primeng/table';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Contact } from '../../models/contact';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { ContactService } from '../../services/contact';
+import { ContactInitialsPipe } from '../../pipes/contact-initials-pipe-pipe';
 
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [TableModule, ButtonModule, ConfirmDialogModule, ToastModule],
+  imports: [ButtonModule, ConfirmDialogModule, ToastModule, ContactInitialsPipe, TitleCasePipe],
   templateUrl: './contact-list.html',
   styleUrl: './contact-list.scss',
   providers: [ConfirmationService, MessageService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactList {
-  @Output() onEdit: EventEmitter<Contact> = new EventEmitter();
-  private confirmationService = inject(ConfirmationService);
-  private messageService = inject(MessageService);
+export class ContactList implements OnInit {
+  readonly searchTerm = input('');
+  readonly edit = output<Contact>();
+  readonly deleted = output<void>();
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly messageService = inject(MessageService);
+  private readonly contactService = inject(ContactService);
 
-  contacts: Contact[] = [
-    { id: 1, name: 'John Doe', email: 'john.doe@example.com', phone: '123-456-7890' },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', phone: '098-765-4321' },
-  ];
+  protected readonly contacts = signal<Contact[]>([]);
+  protected readonly hasContacts = computed(() => this.contacts().length > 0);
+  protected readonly hasSearchTerm = computed(() => this.searchTerm().trim().length > 0);
+  protected readonly emptyMessage = computed(() =>
+    this.hasSearchTerm()
+      ? `Nenhum contato encontrado para “${this.searchTerm()}”.`
+      : 'Ainda não há contatos cadastrados.',
+  );
+
+  ngOnInit(): void {
+    this.loadContacts();
+  }
+
+  loadContacts(searchTerm: string = ''): void {
+    this.contacts.set(this.contactService.getContacts(searchTerm));
+  }
 
   editContact(contact: Contact) {
-    this.onEdit.emit(contact);
+    this.edit.emit(contact);
   }
 
   deleteContact(event: Event, contact: Contact) {
@@ -44,18 +71,13 @@ export class ContactList {
       header: 'Confirmação',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.contacts = this.contacts.filter((c) => c.id !== contact.id);
+        this.contactService.deleteContact(contact.id);
+        this.loadContacts(this.searchTerm());
+        this.deleted.emit();
         this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Contact deleted',
-        });
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
+          severity: 'success',
+          summary: 'Confirmado',
+          detail: 'Contato deletado com sucesso!',
         });
       },
     });
