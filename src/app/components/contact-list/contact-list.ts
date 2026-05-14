@@ -15,7 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ContactService } from '../../services/contact';
-import { ContactInitialsPipe } from '../../pipes/contact-initials-pipe-pipe';
+import { ContactInitialsPipe } from '../../pipes/contact-initials-pipe';
 
 @Component({
   selector: 'app-contact-list',
